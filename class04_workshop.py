@@ -9,11 +9,18 @@ def show_movies(movie_list):
         print("Ticket price: ", movie["ticket_price"])
         print("=================================================")
 
-# # ฟังก์ชันตรวจสอบอายุตามข้อจำกัดของหนัง
-# def check_age(user_age, age_restriction):
-#     # TODO: ถ้า age_restriction เป็น 'G' ให้ผ่านเลย
-#     # ถ้าไม่ใช่ ให้ดึงเลขอายุขั้นต่ำมาเปรียบเทียบกับ user_age
- 
+# ฟังก์ชันตรวจสอบอายุตามข้อจำกัดของหนัง
+def check_age(user_age, age_restriction, movie_list):
+    # TODO: ถ้า age_restriction เป็น 'G' ให้ผ่านเลย
+    movieChoice += 1
+    canWatch = True
+
+    # ถ้าไม่ใช่ ให้ดึงเลขอายุขั้นต่ำมาเปรียบเทียบกับ user_age
+    if age_restriction == movie_list[movieChoice]["age_restriction"] :
+        canWatch = False
+    
+    return canWatch
+
 # # ฟังก์ชันคำนวณราคาตั๋วโดยขึ้นกับประเภทหนัง
 # def calculate_price(base_price, genre):
 #     # TODO: ถ้า genre เป็น 'Romantic' บวกเพิ่ม 50 บาท
@@ -26,22 +33,32 @@ def buy_ticket(movie_list):
     show_movies(movie_list)
 
     # 2. รับค่าตัวเลือกหนังจากผู้ใช้ (1-5)
+    validMovie = False
 
     # รับค่าตัวเลือกเมนูจากผู้ใช้
-    menu = int(input("เลือกเมนู: "))
+    menu = int(input("Choose movies [1 - 5]: "))
     if menu <= 1 or menu <= 5 :
-        movie = menu
+        movieChoice = menu
+        validMovie = True
     else :
+        os.system('cls')
         print("Invalid menu!")
-        time.sleep(5)
+        time.sleep(1)
         os.system('cls')
     
-    user_age = int(input("Type your age: "))
-    check_age(user_age, age_restriction)
+    while validMovie :
+        user_age = int(input("Type your age: "))
+        age_restriction = movies[movieChoice]["age_restriction"]
+        check_age(user_age, age_restriction, movie_list)
 
     # 3. รับอายุผู้ใช้
     # 4. ตรวจสอบอายุผ่าน check_age
     #    - ถ้าไม่ผ่าน ให้แสดงข้อความว่าอายุน้อยเกินไปและ return ออกจากฟังก์ชัน
+        if not canWatch :
+            os.system('cls')
+            print("Your age is not egilable for this movie")
+            time.sleep(1)
+            validMovie = False
     # 5. ให้ผู้ใช้เลือกเสียงพากย์ (1 = พากย์ไทย, 2 = Soundtrack)
     # 6. คำนวณราคาตั๋วโดยใช้ calculate_price
     # 7. แสดงผลการซื้อบัตร พร้อมชื่อหนัง, เสียงที่เลือก, ราคาตั๋ว
@@ -93,7 +110,10 @@ def main():
                 if menu == "x" or menu == "X" :
                     menuPage = True
                 else :
+                    os.system('cls')
                     print("Invalid menu!")
+                    time.sleep(1)
+                    os.system('cls')
         elif menu == 2 :
             menuPage = False
             while not menuPage :
@@ -101,7 +121,10 @@ def main():
                 print("=========== Choose Movies [1] - [5] =============")
                 buy_ticket(movies)
         else :
+            os.system('cls')
             print("Invalid menu!")
+            time.sleep(1)
+            os.system('cls')
 
     
         # TODO: ตรวจสอบเมนูที่เลือก

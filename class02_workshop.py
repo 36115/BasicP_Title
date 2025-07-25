@@ -17,4 +17,3 @@ if distance >= 5 and distance <= 500:
     print("ราคา", price, "บาท")
 else:
     print("ไม่มีค่าจัดส่ง ส่งฟรี")
-    
